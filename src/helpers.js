@@ -5,7 +5,7 @@ const getNodePath = (node, allSitePage) => {
         return node;
     }
 
-    const nodePath = allSitePage.get(node.path.replace(/\/$/, ``));
+    const nodePath = allSitePage.get(node.path.replace(/\/$|$/, `/`));
 
     if (getNodePath){
         node.path = nodePath;

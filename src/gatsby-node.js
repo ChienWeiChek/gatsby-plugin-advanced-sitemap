@@ -47,9 +47,9 @@ const runQuery = (handler, { query, mapping, exclude }) => handler(query).then((
         if (r.data?.[source]?.edges && r.data[source].edges.length) {
             r.data[source].edges = r.data[source].edges.filter(({ node }) => !exclude.some((excludedRoute) => { 
                 const sourceType = node.__typename ? `all${node.__typename}` : source;
-                const slug = (sourceType === `allMarkdownRemark` || sourceType === `allMdx`) || (node?.fields?.slug) ? node.fields.slug.replace(/^\/|\/$/, ``) : node.slug.replace(/^\/|\/$/, ``);
+                const slug = (sourceType === `allMarkdownRemark` || sourceType === `allMdx`) || (node?.fields?.slug) ? node.fields.slug.replace(/\/$|$/, `/`) : node.slug.replace(/\/$|$/, `/`);
                 
-                excludedRoute = typeof excludedRoute === `object` ? excludedRoute : excludedRoute.replace(/^\/|\/$/, ``);
+                excludedRoute = typeof excludedRoute === `object` ? excludedRoute : excludedRoute.replace(/\/$|$/, `/`);
 
                 // test if the passed regular expression is valid
                 if (typeof excludedRoute === `object`) {
@@ -83,7 +83,7 @@ const serialize = ({ ...sources } = {}, { site, allSitePage }, { mapping, addUnc
     
     allSitePage.edges.forEach((page) => {
         if (page?.node?.url){
-            const pathurl = page.node.url.replace(/\/$/,``);
+            const pathurl = page.node.url.replace(/\/$|$/, `/`);
             allSitePagePathNodeMap.set(pathurl, pathurl);
         }
     });
