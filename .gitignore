@@ -84,6 +84,7 @@ gatsby-ssr.js
 utils.js
 helpers.js
 serializers.js
+limit-url.js
 
 # Keep the src files
 !src/**/*.js

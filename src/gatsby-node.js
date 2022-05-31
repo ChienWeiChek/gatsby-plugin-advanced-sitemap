@@ -8,6 +8,7 @@ import Manager from './SiteMapManager';
 import * as utils from './utils';
 import { addPageNodes, serializeMarkdownNodes, serializeSources } from './serializers';
 import { getNodePath } from './helpers';
+import { limitUrl } from './limit-url';
 
 let siteURL;
 
@@ -180,6 +181,10 @@ exports.onPostBuild = async ({ graphql, pathPrefix }, pluginOptions) => {
         queryRecords = await runQuery(graphql, options);
     }
 
+    const result = limitUrl({ queryRecords, options });
+    queryRecords = result.queryRecords;
+    options.mapping = result.options.mapping;
+    
     // Instanciate the Ghost Sitemaps Manager
     const manager = new Manager(options);
 
