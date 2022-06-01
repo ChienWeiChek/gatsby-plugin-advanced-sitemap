@@ -1,6 +1,11 @@
 const limitUrl = ({ queryRecords, options }) => {
     const deepCopyRecord = { ...queryRecords };
-    const numberDivide = options.limitPerPage || 1000;
+
+    //make sure limitPerPage is integer and positive
+    const numberDivide =
+        Number.isInteger(options.limitPerPage) && options.limitPerPage > 0
+            ? options.limitPerPage
+            : 1000;
 
     for (const key in deepCopyRecord) {
         if (Object.hasOwnProperty.call(deepCopyRecord, key)) {
