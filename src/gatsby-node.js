@@ -181,6 +181,17 @@ exports.onPostBuild = async ({ graphql, pathPrefix }, pluginOptions) => {
         queryRecords = await runQuery(graphql, options);
     }
 
+    //sort by last update
+    for (const key in queryRecords) {
+        if (Object.hasOwnProperty.call(queryRecords, key)) {
+            const element = queryRecords[key];
+            element.edges.sort(
+                (a, b) => new Date(b.node.updated_at).getTime() -
+                    new Date(a.node.updated_at).getTime()
+            );
+        }
+    }
+
     const result = limitUrl({ queryRecords, options });
     queryRecords = result.queryRecords;
     options.mapping = result.options.mapping;
